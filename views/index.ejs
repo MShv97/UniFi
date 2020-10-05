@@ -1,0 +1,13 @@
+<%- include("header") -%>
+
+<h1>Hello <%= user.firstname %> </h1>
+<a href="/createFolder/<%= user.id %>">createFolder</a>
+<ul>
+    <%  folders.forEach(folder => {%>
+    <li><a href="/getFolder/<%= folder.id %>"> <%= folder.Name %></a> </li>
+    <a href=""></a>
+    <% });%>
+</ul>
+
+
+<%- include("footer") -%>

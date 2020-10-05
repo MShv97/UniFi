@@ -1,0 +1,15 @@
+<%- include("header") -%>
+
+<form action="/uploadfile/<%= folderID %>" method="post" encType="multipart/form-data">
+    Upload File <input type="file" name="file">
+    <button type="submit">Upload</button>
+</form>
+<ul>
+    <%  files.forEach(file => {%>
+    <li><a href="/getFile/<%= file.id + file.Name %>"> <%= file.Name %></a> </li>
+    <a href=""></a>
+    <% });%>
+</ul>
+
+
+<%- include("footer") -%>
