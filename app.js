@@ -17,7 +17,6 @@ app.route("/register")
         res.render("register");
     })
     .post((req, res) => {
-        console.log(req.body);
         const user = { username: req.body.username, password: md5(req.body.password), firstname: req.body.fName, lastname: req.body.lName };
         const sql = "INSERT INTO users SET ?";
         db.query(sql, user, (err, results) => {
@@ -68,7 +67,7 @@ app.route("/createFolder/:id")
             else {
                 const sql2 = "INSERT INTO user_folders SET ?";
                 const user_folder = { user_id: req.params.id, folder_id: result.insertId };
-                db.query(sql, user_folder, (err, result) => {
+                db.query(sql2, user_folder, (err, result2) => {
                     if (err) res.send(err);
                     else res.render("login");
                 })
@@ -76,13 +75,16 @@ app.route("/createFolder/:id")
         });
     });
 
-app.route("/uploadfile/:id")
+app.route("/file/:id")
+    .get((req, res) => {
+        res.download(__dirname + "/files/" + req.params.id);
+    })
     .post((req, res) => {
         if (!req.files || Object.keys(req.files).length === 0) {
             return res.status(400).send('No files were uploaded.');
         }
         const newFile = req.files.file;
-        const file = { Name: newFile.name, url: newFile.name, folderid: req.params.id };
+        const file = { Name: newFile.name, folderid: req.params.id };
         const sql = "INSERT INTO files SET ?";
         db.query(sql, file, (err, result) => {
             if (err) res.send(err);
@@ -95,14 +97,17 @@ app.route("/uploadfile/:id")
         });
     });
 
+app.get("/deletefile/:id", (req, res) => {
+    const sql = "DELETE FROM files WHERE id = '" + req.params.id + "'";
+    db.query(sql, (err, result) => {
+        if (err) res.send(err);
+        else res.render("login");
+    })
+});
 app.get("/", (req, res) => {
     res.render("login");
 });
 
-app.route("/getFile/:id")
-    .get((req, res) => {
-        res.download(__dirname + "/files/" + req.params.id);
-    });
 
 
 app.listen(3000, function () {
