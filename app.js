@@ -36,8 +36,8 @@ app.route("/signin/")
                     res.send("No match");
                 }
                 else {
-                    const sql = "SELECT folders.* from folders JOIN user_folders WHERE user_id = '" + results[0].id + "' LIMIT 10";
-                    db.query(sql, (err, foundFolders) => {
+                    const sql2 = "SELECT DISTINCT folders.* from folders INNER JOIN user_folders ON user_folders.user_id = '" + results[0].id + "' LIMIT 10";
+                    db.query(sql2, (err, foundFolders) => {
                         res.render("index", { user: results[0], folders: foundFolders });
                     });
                 }
