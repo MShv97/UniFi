@@ -2,10 +2,13 @@
 
 <h1>Hello <%= user.firstname %> </h1>
 <a href="/createFolder/<%= user.id %>">createFolder</a>
-<ul>
+<input class="form-control" id="listSearch" type="text" placeholder="Search..">
+<ul id="myList">
     <%  folders.forEach(folder => {%>
-    <li><a href="/getFolder/<%= folder.id %>"> <%= folder.name %></a> </li>
-    <a href=""></a>
+    <li><a href="/getFolder/<%= folder.id %>"> <%= folder.name %></a> ...<a href="/deletefolder/<%= folder.id%>"> delete
+        </a>
+    </li>
+
     <% });%>
 </ul>
 

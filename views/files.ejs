@@ -4,7 +4,8 @@
     Upload File <input type="file" name="file">
     <button type="submit">Upload</button>
 </form>
-<ul>
+<input class="form-control" id="listSearch" type="text" placeholder="Search..">
+<ul id="myList">
     <%  files.forEach(file => {%>
     <li><a href="/file/<%= file.id + file.name %>"> <%= file.name %></a> ...
         <a href="/deletefile/<%= file.id%>"> delete </a>

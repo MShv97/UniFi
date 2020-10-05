@@ -49,7 +49,7 @@ app.route("/loggedin/:id").get((req, res) => {
 });
 app.route("/getfolder/:id")
     .get((req, res) => {
-        const sql = "SELECT * FROM files WHERE folderid='" + req.params.id + "'";
+        const sql = "SELECT * FROM files WHERE folderid='" + req.params.id + "' LIMIT 10";
         db.query(sql, (err, foundFiles) => {
             if (err) res.send(err);
             else res.render("files", { folderID: req.params.id, files: foundFiles });
@@ -103,6 +103,26 @@ app.get("/deletefile/:id", (req, res) => {
         if (err) res.send(err);
         else res.render("login");
     })
+});
+
+app.get("/deletefolder/:id", (req, res) => {
+    const sql = "SELECT id FROM files WHERE folderid = '" + req.params.id + " LIMIT 1'";
+    db.query(sql, (err, foundFiles) => {
+        if (err) res.send(err);
+        else {
+            if (foundFiles.length === 0) {
+                const sql2 = "Delete FROM user_folders WHERE folder_id = '" + req.params.id + "'";
+                const sql3 = "Delete FROM folders WHERE id = '" + req.params.id + "'";
+                db.query(sql2, (err) => {
+                    if (err) res.send(err);
+                    else db.query(sql3, (err) => {
+                        if (err) res.send(err);
+                        else res.render("login");
+                    })
+                });
+            } else res.send("Folder is not empty!");
+        }
+    });
 });
 app.get("/", (req, res) => {
     res.render("login");
